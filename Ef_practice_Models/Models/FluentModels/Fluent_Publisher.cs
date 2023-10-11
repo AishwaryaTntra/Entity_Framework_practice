@@ -3,16 +3,14 @@
 
 namespace Ef_practice_Model.Models
 {
-    public class Publisher
+    public class Fluent_Publisher
     {
-        [Key]
         public int PublisherId { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public string Location { get; set; }
 
-        public List<Book> Books { get; set; }
+        public List<Fluent_Book> Books { get; set; }
     }
 }

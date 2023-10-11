@@ -4,6 +4,7 @@ using EF_practice_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF_practice_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231011070933_addFluent_BookDetailsToDb")]
+    partial class addFluent_BookDetailsToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,35 +189,6 @@ namespace EF_practice_DataAccess.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Ef_practice_Model.Models.Fluent_Author", b =>
-                {
-                    b.Property<int>("Author_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Author_id"));
-
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Author_id");
-
-                    b.ToTable("Fluent_Authors");
-                });
-
             modelBuilder.Entity("Ef_practice_Model.Models.Fluent_Book", b =>
                 {
                     b.Property<int>("BookId")
@@ -231,16 +205,11 @@ namespace EF_practice_DataAccess.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Publisher_Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BookId");
-
-                    b.HasIndex("Publisher_Id");
 
                     b.ToTable("Fluent_Books");
                 });
@@ -252,9 +221,6 @@ namespace EF_practice_DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookDetail_Id"));
-
-                    b.Property<int>("Book_Id")
-                        .HasColumnType("int");
 
                     b.Property<int>("NumberOfChapters")
                         .HasColumnType("int")
@@ -269,31 +235,7 @@ namespace EF_practice_DataAccess.Migrations
 
                     b.HasKey("BookDetail_Id");
 
-                    b.HasIndex("Book_Id")
-                        .IsUnique();
-
                     b.ToTable("Fluent_BookDetails", (string)null);
-                });
-
-            modelBuilder.Entity("Ef_practice_Model.Models.Fluent_Publisher", b =>
-                {
-                    b.Property<int>("PublisherId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PublisherId"));
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PublisherId");
-
-                    b.ToTable("Fluent_Publishers");
                 });
 
             modelBuilder.Entity("Ef_practice_Model.Models.Publisher", b =>
@@ -355,21 +297,6 @@ namespace EF_practice_DataAccess.Migrations
                     b.ToTable("SubCategories");
                 });
 
-            modelBuilder.Entity("Fluent_AuthorFluent_Book", b =>
-                {
-                    b.Property<int>("AuthorsAuthor_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BooksBookId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AuthorsAuthor_id", "BooksBookId");
-
-                    b.HasIndex("BooksBookId");
-
-                    b.ToTable("Fluent_AuthorFluent_Book");
-                });
-
             modelBuilder.Entity("AuthorBook", b =>
                 {
                     b.HasOne("Ef_practice_Model.Models.Author", null)
@@ -407,58 +334,10 @@ namespace EF_practice_DataAccess.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("Ef_practice_Model.Models.Fluent_Book", b =>
-                {
-                    b.HasOne("Ef_practice_Model.Models.Fluent_Publisher", "Publisher")
-                        .WithMany("Books")
-                        .HasForeignKey("Publisher_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Publisher");
-                });
-
-            modelBuilder.Entity("Ef_practice_Model.Models.Fluent_BookDetail", b =>
-                {
-                    b.HasOne("Ef_practice_Model.Models.Fluent_Book", "Book")
-                        .WithOne("BookDetail")
-                        .HasForeignKey("Ef_practice_Model.Models.Fluent_BookDetail", "Book_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-                });
-
-            modelBuilder.Entity("Fluent_AuthorFluent_Book", b =>
-                {
-                    b.HasOne("Ef_practice_Model.Models.Fluent_Author", null)
-                        .WithMany()
-                        .HasForeignKey("AuthorsAuthor_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ef_practice_Model.Models.Fluent_Book", null)
-                        .WithMany()
-                        .HasForeignKey("BooksBookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Ef_practice_Model.Models.Book", b =>
                 {
                     b.Navigation("BookDetail")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Ef_practice_Model.Models.Fluent_Book", b =>
-                {
-                    b.Navigation("BookDetail")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Ef_practice_Model.Models.Fluent_Publisher", b =>
-                {
-                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("Ef_practice_Model.Models.Publisher", b =>
