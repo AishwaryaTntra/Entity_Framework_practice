@@ -1,10 +1,6 @@
-﻿using Ef_practice_Model.Models;
+﻿using EF_practice_DataAccess.FluentConfig;
+using Ef_practice_Model.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EF_practice_DataAccess.Data
 {
@@ -18,6 +14,12 @@ namespace EF_practice_DataAccess.Data
 
         public DbSet<BookDetail> BookDetails { get; set; }
 
+        public DbSet<Fluent_BookDetail> BookDetail_fluent { get; set; }
+        public DbSet<Fluent_Book> Fluent_Books { get; set; }
+        public DbSet<Fluent_Author> Fluent_Authors { get; set; }
+
+        public DbSet<Fluent_Publisher> Fluent_Publishers{ get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
@@ -28,6 +30,11 @@ namespace EF_practice_DataAccess.Data
         {
             modelBuilder.Entity<Book>().Property(u => u.Price).HasPrecision(10, 5);
 
+            modelBuilder.ApplyConfiguration(new FluentAuthorConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookDetailConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookConfig());
+            modelBuilder.ApplyConfiguration(new FluentPublisherConfig());
+
             var bookList = new Book[]
             {
                 new Book {BookId= 1, Title="Spider without Duty", ISBN="123B12", Price=10.99m, Publisher_Id=1 },
@@ -36,7 +43,7 @@ namespace EF_practice_DataAccess.Data
                 new Book {BookId= 4, Title="Cookie Jar", ISBN="CC12B12", Price=25.99m , Publisher_Id =2 },
                 new Book {BookId= 5, Title="Cloudy Forest", ISBN="90392B33", Price=40.99m , Publisher_Id = 3 }
             };
-            
+
             modelBuilder.Entity<Book>().HasData(bookList);
 
             modelBuilder.Entity<Publisher>().HasData(

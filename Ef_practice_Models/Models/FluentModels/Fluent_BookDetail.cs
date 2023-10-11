@@ -1,13 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ef_practice_Model.Models
 {
-    public class BookDetail
+    public class Fluent_BookDetail
     {
-        [Key]
         public int BookDetail_Id { get; set; }
-        [Required]
         public int NumberOfChapters { get; set; }
 
         public int NumberOfPages { get; set; }
@@ -17,7 +14,7 @@ namespace Ef_practice_Model.Models
 
         [ForeignKey("Book")]
         public int Book_Id { get; set; }
-        public Book Book { get; set; }
+        public Fluent_Book Book { get; set; }
 
 
     }

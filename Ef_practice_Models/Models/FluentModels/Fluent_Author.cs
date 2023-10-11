@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ef_practice_Model.Models
 {
-    public class Author
+    public class Fluent_Author
     {
         [Key]
         public int Author_id { get; set; }
@@ -28,6 +28,6 @@ namespace Ef_practice_Model.Models
             }
         }
 
-        public List<Book> Books { get; set; }
+        public List<Fluent_Book> Books { get; set; }
     }
 }
