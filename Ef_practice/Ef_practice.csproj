@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EF_practice_DataAccess\EF_practice_DataAccess.csproj" />
+    <ProjectReference Include="..\Ef_practice_Models\Ef_practice_Model.csproj" />
+  </ItemGroup>
+
 </Project>
