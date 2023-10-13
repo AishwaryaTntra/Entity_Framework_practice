@@ -1,10 +1,11 @@
 ﻿using EF_practice_DataAccess.FluentConfig;
 using Ef_practice_Model.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace EF_practice_DataAccess.Data
 {
-    internal class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -23,7 +24,8 @@ namespace EF_practice_DataAccess.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer("Server=NIT0010\\SQLEXPRESS01;Database=Ef_Practice;TrustServerCertificate=True;Trusted_Connection=True;");
+            options.UseSqlServer("Server=NIT0010\\SQLEXPRESS01;Database=Ef_Practice;TrustServerCertificate=True;Trusted_Connection=True;")
+                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name}, LogLevel.Information);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
